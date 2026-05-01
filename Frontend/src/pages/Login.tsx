@@ -24,12 +24,16 @@ export default function Login() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>Admin sisselogimine</h2>
-      <input type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} required />
-      <input type="password" placeholder="Parool" value={password} onChange={e => setPassword(e.target.value)} required />
-      <button type="submit">Logi sisse</button>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-    </form>
+    <div className="max-w-lg mx-auto mt-10">
+      <div className="card bg-base-100 shadow-md p-8">
+        <h2 className="text-2xl font-bold mb-6">Admin sisselogimine</h2>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <input type="email" placeholder="Email" className="input input-bordered w-full" value={email} onChange={e => setEmail(e.target.value)} required />
+          <input type="password" placeholder="Parool" className="input input-bordered w-full" value={password} onChange={e => setPassword(e.target.value)} required />
+          <button type="submit" className="btn btn-primary w-full">Logi sisse</button>
+          {error && <div className="alert alert-error">{error}</div>}
+        </form>
+      </div>
+    </div>
   );
 }

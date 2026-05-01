@@ -19,18 +19,25 @@ export default function EventList() {
   }, []);
 
   return (
-    <div>
+    <div className="max-w-2xl mx-auto p-4 mt-6">
+      <h2 className="text-2xl font-bold mb-4">Sündmused</h2>
       {events.length === 0 ? (
-        <p>Sündmusi pole veel lisatud.</p>
+        <p className="text-center text-gray-500 mt-10 text-lg">Sündmusi pole veel lisatud.</p>
       ) : (
-        <ul>
+        <div className="flex flex-col gap-4">
           {events.map(event => (
-            <li key={event.id}>
-              <span>{event.name} — {new Date(event.dateTime).toLocaleString()} — Max: {event.maxParticipants}</span>
-              <button onClick={() => navigate(`/events/${event.id}/register`)}>Registreeru</button>
-            </li>
+            <div key={event.id} className="card bg-base-100 shadow-md p-6">
+              <div className="flex justify-between items-center">
+                <div>
+                  <h3 className="text-xl font-bold">{event.name}</h3>
+                  <p className="text-gray-500 mt-1">{new Date(event.dateTime).toLocaleString()}</p>
+                  <p className="text-gray-400 text-sm mt-1">Max osalejaid: {event.maxParticipants}</p>
+                </div>
+                <button onClick={() => navigate(`/events/${event.id}/register`)} className="btn btn-primary">Registreeru</button>
+              </div>
+            </div>
           ))}
-        </ul>
+        </div>
       )}
     </div>
   );

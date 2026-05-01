@@ -27,20 +27,26 @@ export default function Register() {
   };
 
   if (success) return (
-    <div>
-      <p>Registreerimine õnnestus!</p>
-      <button onClick={() => navigate('/')}>Tagasi</button>
+    <div className="max-w-lg mx-auto mt-10">
+      <div className="card bg-base-100 shadow-md p-8 text-center">
+        <p className="text-xl font-bold text-success mb-6">Registreerimine õnnestus!</p>
+        <button onClick={() => navigate('/')} className="btn btn-primary w-full">Tagasi</button>
+      </div>
     </div>
   );
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>Registreeru sündmusele</h2>
-      <input placeholder="Eesnimi" value={firstName} onChange={e => setFirstName(e.target.value)} required />
-      <input placeholder="Perenimi" value={lastName} onChange={e => setLastName(e.target.value)} required />
-      <input placeholder="Isikukood" value={personalCode} onChange={e => setPersonalCode(e.target.value)} required />
-      <button type="submit">Registreeru</button>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-    </form>
+    <div className="max-w-lg mx-auto mt-10">
+      <div className="card bg-base-100 shadow-md p-8">
+        <h2 className="text-2xl font-bold mb-6">Registreeru sündmusele</h2>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <input placeholder="Eesnimi" className="input input-bordered w-full" value={firstName} onChange={e => setFirstName(e.target.value)} required />
+          <input placeholder="Perenimi" className="input input-bordered w-full" value={lastName} onChange={e => setLastName(e.target.value)} required />
+          <input placeholder="Isikukood" className="input input-bordered w-full" value={personalCode} onChange={e => setPersonalCode(e.target.value)} required />
+          <button type="submit" className="btn btn-primary w-full">Registreeru</button>
+          {error && <div className="alert alert-error">{error}</div>}
+        </form>
+      </div>
+    </div>
   );
 }

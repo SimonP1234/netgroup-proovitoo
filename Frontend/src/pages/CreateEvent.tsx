@@ -27,13 +27,17 @@ export default function CreateEvent() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>Lisa uus sündmus</h2>
-      <input placeholder="Sündmuse nimi" value={name} onChange={e => setName(e.target.value)} required />
-      <input type="datetime-local" value={dateTime} onChange={e => setDateTime(e.target.value)} required />
-      <input type="number" placeholder="Max osalejad" value={maxParticipants} onChange={e => setMaxParticipants(e.target.value)} required />
-      <button type="submit">Loo sündmus</button>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-    </form>
+    <div className="max-w-md mx-auto mt-10">
+      <div className="card bg-base-100 shadow-md p-8">
+        <h2 className="text-2xl font-bold mb-6">Lisa uus sündmus</h2>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <input placeholder="Sündmuse nimi" className="input input-bordered w-full" value={name} onChange={e => setName(e.target.value)} required />
+          <input type="datetime-local" className="input input-bordered w-full" value={dateTime} onChange={e => setDateTime(e.target.value)} required />
+          <input type="number" placeholder="Max osalejad" className="input input-bordered w-full" value={maxParticipants} onChange={e => setMaxParticipants(e.target.value)} required />
+          <button type="submit" className="btn btn-primary w-full">Loo sündmus</button>
+          {error && <div className="alert alert-error">{error}</div>}
+        </form>
+      </div>
+    </div>
   );
 }

@@ -15,16 +15,20 @@ function Nav() {
   };
 
   return (
-    <nav>
-      <Link to="/"><h1>Event Registration</h1></Link>
-      {token ? (
-        <div>
-          <button onClick={() => navigate('/events/new')}>Lisa sündmus</button>
-          <button onClick={logout}>Logi välja</button>
-        </div>
-      ) : (
-        <button onClick={() => navigate('/login')}>Logi sisse</button>
-      )}
+    <nav className="navbar bg-base-100 shadow px-6 py-4">
+      <div className="flex-1">
+        <Link to="/" className="text-2xl font-bold"><h1>Event Registration</h1></Link>
+      </div>
+      <div className="flex gap-2">
+        {token ? (
+          <>
+            <button onClick={() => navigate('/events/new')} className="btn btn-primary">Lisa sündmus</button>
+            <button onClick={logout} className="btn btn-ghost">Logi välja</button>
+          </>
+        ) : (
+          <button onClick={() => navigate('/login')} className="btn btn-primary">Logi sisse</button>
+        )}
+      </div>
     </nav>
   );
 }
@@ -33,7 +37,7 @@ function App() {
   return (
     <BrowserRouter>
       <Nav />
-      <main>
+      <main className="max-w-2xl mx-auto p-4 mt-6">
         <Routes>
           <Route path="/" element={<EventList />} />
           <Route path="/login" element={<Login />} />
@@ -44,5 +48,6 @@ function App() {
     </BrowserRouter>
   );
 }
+
 
 export default App

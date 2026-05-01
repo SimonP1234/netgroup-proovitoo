@@ -23,7 +23,7 @@ public class AuthController : ControllerBase
         var adminPassword = _config["Admin:Password"];
 
         if (request.Email != adminEmail || request.Password != adminPassword)
-            return Unauthorized("Invalid credentials");
+            return Unauthorized("Vale e-post või parool");
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]!));
         var token = new JwtSecurityToken(

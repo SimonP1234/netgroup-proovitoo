@@ -8,8 +8,24 @@ export default function CreateEvent() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
+  const validate = () => {
+    if (!name.trim() || !dateTime.trim() || !maxParticipants.trim()) {
+      return 'Kõik väljad on kohustuslikud';
+    }
+    if (isNaN(parseInt(maxParticipants)) || parseInt(maxParticipants) <= 0) {
+      return 'Max osalejad peab olema positiivne number';
+    }
+    return null;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError('');
+    const validationError = validate();
+    if (validationError) {
+      setError(validationError);
+      return;
+    }
     const token = localStorage.getItem('token');
     const res = await fetch('/api/events', {
       method: 'POST',
@@ -31,9 +47,9 @@ export default function CreateEvent() {
       <div className="card bg-base-100 shadow-md p-8">
         <h2 className="text-2xl font-bold mb-6">Lisa uus sündmus</h2>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <input placeholder="Sündmuse nimi" className="input input-bordered w-full" value={name} onChange={e => setName(e.target.value)} required />
-          <input type="datetime-local" className="input input-bordered w-full" value={dateTime} onChange={e => setDateTime(e.target.value)} required />
-          <input type="number" placeholder="Max osalejad" className="input input-bordered w-full" value={maxParticipants} onChange={e => setMaxParticipants(e.target.value)} required />
+          <input placeholder="Sündmuse nimi" className="input input-bordered w-full" value={name} onChange={e => setName(e.target.value)}/>
+          <input type="datetime-local" className="input input-bordered w-full" value={dateTime} onChange={e => setDateTime(e.target.value)} />
+          <input type="number" placeholder="Max osalejad" className="input input-bordered w-full" value={maxParticipants} onChange={e => setMaxParticipants(e.target.value)} />
           <button type="submit" className="btn btn-primary w-full">Loo sündmus</button>
           {error && <div className="alert alert-error">{error}</div>}
         </form>

@@ -27,6 +27,13 @@ public class EventsController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Event>> CreateEvent(Event newEvent)
     {
+        if (string.IsNullOrWhiteSpace(newEvent.Name))
+            return BadRequest("Sündmuse nimi on kohustuslik");
+        if (newEvent.MaxParticipants <= 0)
+            return BadRequest("Osalejate arv peab olema vähemalt 1");
+        if (newEvent.DateTime == default)
+            return BadRequest("Kuupäev ja kellaaeg on kohustuslik");
+
         newEvent.DateTime = DateTime.SpecifyKind(newEvent.DateTime, DateTimeKind.Utc);
         _context.Events.Add(newEvent);
         await _context.SaveChangesAsync();
@@ -36,12 +43,23 @@ public class EventsController : ControllerBase
     [HttpPost("{id}/register")]
     public async Task<ActionResult<Registration>> Register(int id, Registration registration)
     {
+        if (string.IsNullOrWhiteSpace(registration.FirstName) ||
+            string.IsNullOrWhiteSpace(registration.LastName) ||
+            string.IsNullOrWhiteSpace(registration.PersonalCode))
+        {
+            return BadRequest("Kõik väljad on kohustuslikud");
+        }
+        if (registration.PersonalCode.Length != 11)
+        {
+            return BadRequest("Isikukood peab olema 11-kohaline");
+        }
+
         var eventItem = await _context.Events.FindAsync(id);
         if (eventItem == null) return NotFound();
 
         var currentCount = await _context.Registrations.CountAsync(r => r.EventId == id);
         if (currentCount >= eventItem.MaxParticipants)
-            return BadRequest("Event is full");
+            return BadRequest("Sündmus on täis");
 
         registration.EventId = id;
         _context.Registrations.Add(registration);

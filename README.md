@@ -19,7 +19,7 @@ The app runs at `http://localhost:5173`
 ### Prerequisites
 
 - .NET 10 SDK
-- Node.js 18+
+- Node.js 22+
 - Docker (for PostgreSQL)
 
 ### 1. Start the database

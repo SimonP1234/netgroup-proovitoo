@@ -4,23 +4,34 @@ Event registration system where admins can create events and users can register 
 
 ## Prerequisites
 
+- Docker
+
+## Quick Start (Docker)
+
+```bash
+docker compose up --build
+```
+
+The app runs at `http://localhost:5173`
+
+## Local Development
+
+### Prerequisites
+
 - .NET 10 SDK
 - Node.js 18+
 - Docker (for PostgreSQL)
 
-## Setup
-
 ### 1. Start the database
 
 ```bash
-docker compose up -d
+docker compose up postgres -d
 ```
 
 ### 2. Run the backend
 
 ```bash
 cd Backend/Api
-dotnet ef database update
 dotnet run
 ```
 

@@ -41,8 +41,6 @@ public class EventsController : ControllerBase
             return BadRequest("Osalejate arv peab olema vähemalt 1");
         if (newEvent.DateTime == default)
             return BadRequest("Kuupäev ja kellaaeg on kohustuslik");
-
-        newEvent.DateTime = DateTime.SpecifyKind(newEvent.DateTime, DateTimeKind.Utc);
         _context.Events.Add(newEvent);
         await _context.SaveChangesAsync();
         return CreatedAtAction(nameof(GetEvents), new { id = newEvent.Id }, newEvent);
@@ -74,6 +72,4 @@ public class EventsController : ControllerBase
         await _context.SaveChangesAsync();
         return Ok(registration);
     }
-
-
 }

@@ -27,6 +27,7 @@ public class EventsController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Event>> CreateEvent(Event newEvent)
     {
+        newEvent.DateTime = DateTime.SpecifyKind(newEvent.DateTime, DateTimeKind.Utc);
         _context.Events.Add(newEvent);
         await _context.SaveChangesAsync();
         return CreatedAtAction(nameof(GetEvents), new { id = newEvent.Id }, newEvent);

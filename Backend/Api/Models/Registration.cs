@@ -7,5 +7,5 @@ public class Registration
     public string LastName { get; set; } =  string.Empty;
     public string PersonalCode { get; set; } = string.Empty;
     public int EventId { get; set; }
-    public Event Event { get; set; } = null!;
+    public Event? Event { get; set; } = null!;
 }

@@ -6,6 +6,7 @@ interface Event {
   name: string;
   dateTime: string;
   maxParticipants: number;
+  registeredCount: number;
 }
 
 export default function EventList() {
@@ -25,18 +26,30 @@ export default function EventList() {
         <p className="text-center text-gray-500 mt-10 text-lg">Sündmusi pole veel lisatud.</p>
       ) : (
         <div className="flex flex-col gap-4">
-          {events.map(event => (
-            <div key={event.id} className="card bg-base-100 shadow-md p-6">
-              <div className="flex justify-between items-center">
-                <div>
-                  <h3 className="text-xl font-bold">{event.name}</h3>
-                  <p className="text-gray-500 mt-1">{new Date(event.dateTime).toLocaleString()}</p>
-                  <p className="text-gray-400 text-sm mt-1">Max osalejaid: {event.maxParticipants}</p>
+          {events.map(event => {
+            const isFull = event.registeredCount >= event.maxParticipants;
+            return (
+              <div key={event.id} className="card bg-base-100 shadow-md p-6">
+                <div className="flex justify-between items-center">
+                  <div>
+                    <h3 className="text-xl font-bold">{event.name}</h3>
+                    <p className="text-gray-500 mt-1">{new Date(event.dateTime).toLocaleString()}</p>
+                    <p className="text-sm mt-1">
+                      Osalejad: {event.registeredCount} / {event.maxParticipants}
+                      {isFull && <span className="text-error ml-2 font-bold">Täis!</span>}
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => navigate(`/events/${event.id}/register`)}
+                    className={`btn ${isFull ? 'btn-disabled' : 'btn-primary'}`}
+                    disabled={isFull}
+                  >
+                    Registreeru
+                  </button>
                 </div>
-                <button onClick={() => navigate(`/events/${event.id}/register`)} className="btn btn-primary">Registreeru</button>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>

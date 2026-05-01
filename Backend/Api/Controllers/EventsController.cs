@@ -18,9 +18,17 @@ public class EventsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<Event>>> GetEvents()
+    public async Task<ActionResult> GetEvents()
     {
-        return await _context.Events.ToListAsync();
+        var events = await _context.Events.Select(e => new
+        {
+            e.Id,
+            e.Name,
+            e.DateTime,
+            e.MaxParticipants,
+            RegisteredCount = _context.Registrations.Count(r => r.EventId == e.Id)
+        }).ToListAsync();
+        return Ok(events);
     }
 
     [Authorize]

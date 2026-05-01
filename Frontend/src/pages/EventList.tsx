@@ -13,7 +13,7 @@ export default function EventList() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch('http://localhost:5171/api/events')
+    fetch('/api/events')
       .then(res => res.json())
       .then(data => setEvents(data));
   }, []);

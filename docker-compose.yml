@@ -5,10 +5,23 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: eventregistration
-    ports:
-      - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+  
+  api:
+    build: ./Backend
+    depends_on:
+      - postgres
+    environment:
+      ConnectionStrings__DefaultConnection: Host=postgres;Database=eventregistration;Username=postgres;Password=postgres
+      ASPNETCORE_ENVIRONMENT: Development
+
+  web:
+    build: ./Frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      - api
 
 volumes:
   postgres_data:

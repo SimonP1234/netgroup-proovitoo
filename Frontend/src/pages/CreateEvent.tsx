@@ -11,7 +11,7 @@ export default function CreateEvent() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const token = localStorage.getItem('token');
-    const res = await fetch('http://localhost:5171/api/events', {
+    const res = await fetch('/api/events', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

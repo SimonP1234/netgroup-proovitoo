@@ -17,5 +17,10 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Event>()
             .Property(e => e.DateTime)
             .HasColumnType("timestamp without time zone");
+        
+        modelBuilder.Entity<Registration>()
+            .HasIndex(r => new { r.EventId, r.PersonalCode })
+            .IsUnique();
+
     }
 }

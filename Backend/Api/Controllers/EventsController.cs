@@ -67,9 +67,17 @@ public class EventsController : ControllerBase
         if (currentCount >= eventItem.MaxParticipants)
             return BadRequest("Sündmus on täis");
 
-        registration.EventId = id;
-        _context.Registrations.Add(registration);
-        await _context.SaveChangesAsync();
-        return Ok(registration);
+        try
+        {
+            registration.EventId = id;
+            _context.Registrations.Add(registration);
+            await _context.SaveChangesAsync();
+            return Ok(registration);
+        }
+        catch (DbUpdateException)
+        {
+            return BadRequest("Sama isik on juba registreeritud");
+        }
+
     }
 }

@@ -60,24 +60,34 @@ public class EventsController : ControllerBase
             return BadRequest("Isikukood peab olema 11-kohaline");
         }
 
-        var eventItem = await _context.Events.FindAsync(id);
-        if (eventItem == null) return NotFound();
-
-        var currentCount = await _context.Registrations.CountAsync(r => r.EventId == id);
-        if (currentCount >= eventItem.MaxParticipants)
-            return BadRequest("Sündmus on täis");
-
+        using var transaction = await _context.Database.BeginTransactionAsync(System.Data.IsolationLevel.Serializable);
         try
         {
+            var eventItem = await _context.Events.FindAsync(id);
+            if (eventItem == null)
+            {
+                return NotFound();
+            }
+
+            var currentCount = await _context.Registrations.CountAsync(r => r.EventId == id);
+            if (currentCount >= eventItem.MaxParticipants)
+            {
+                return BadRequest("Sündmus on täis");
+            }
+
             registration.EventId = id;
             _context.Registrations.Add(registration);
             await _context.SaveChangesAsync();
+            await transaction.CommitAsync();
             return Ok(registration);
         }
         catch (DbUpdateException)
         {
             return BadRequest("Sama isik on juba registreeritud");
         }
-
+        catch (Exception)
+        {
+            return BadRequest("Registreerimine ebaõnnestus");
+        }
     }
 }

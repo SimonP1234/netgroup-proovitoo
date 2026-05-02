@@ -37,6 +37,9 @@ export default function CreateEvent() {
     });
     if (res.ok) {
       navigate('/');
+    } else if (res.status === 401) {
+      localStorage.removeItem('token');
+      navigate('/login');
     } else {
       setError('Sündmuse loomine ebaõnnestus');
     }

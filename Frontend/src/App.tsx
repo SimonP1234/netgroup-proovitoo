@@ -41,7 +41,9 @@ function App() {
         <Routes>
           <Route path="/" element={<EventList />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/events/new" element={<CreateEvent />} />
+          <Route path="/events/new" element={
+            localStorage.getItem('token') ? <CreateEvent /> : <Login />
+          } />
           <Route path="/events/:id/register" element={<Register />} />
         </Routes>
       </main>

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-export default function Login() {
+export default function Login({ setToken }: { setToken: (t: string | null) => void }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -17,6 +17,7 @@ export default function Login() {
     if (res.ok) {
       const data = await res.json();
       localStorage.setItem('token', data.token);
+      setToken(data.token);
       navigate('/');
     } else {
       setError('Vale email või parool');

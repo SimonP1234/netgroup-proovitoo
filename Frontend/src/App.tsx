@@ -3,15 +3,15 @@ import EventList from './pages/EventList';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import CreateEvent from './pages/CreateEvent';
+import { useState } from 'react';
 
-function Nav() {
+function Nav({ token, setToken }: { token: string | null, setToken: (t: string | null) => void }) {
   const navigate = useNavigate();
-  const token = localStorage.getItem('token');
 
   const logout = () => {
     localStorage.removeItem('token');
+    setToken(null);
     navigate('/');
-    window.location.reload();
   };
 
   return (
@@ -34,15 +34,17 @@ function Nav() {
 }
 
 function App() {
+  const [token, setToken] = useState(localStorage.getItem('token') || null);
+
   return (
     <BrowserRouter>
-      <Nav />
+      <Nav token={token} setToken={setToken} />
       <main className="max-w-2xl mx-auto p-4 mt-6">
         <Routes>
           <Route path="/" element={<EventList />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<Login setToken={setToken} />} />
           <Route path="/events/new" element={
-            localStorage.getItem('token') ? <CreateEvent /> : <Login />
+            token ? <CreateEvent /> : <Login setToken={setToken} />
           } />
           <Route path="/events/:id/register" element={<Register />} />
         </Routes>
